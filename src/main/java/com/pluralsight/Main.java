@@ -47,7 +47,7 @@ public class Main {
                 exit();
                 break;
             default:
-                System.out.println("INVALID LETTER");
+                System.out.println("Letter has to be uppercase or one of the letters above");
                 System.out.print("Press Enter to continue...");
                 keyboard.nextLine().trim();
                 System.out.println();
