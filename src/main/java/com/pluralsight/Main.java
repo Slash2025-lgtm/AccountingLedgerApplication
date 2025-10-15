@@ -445,6 +445,7 @@ public class Main {
 
     public static HashMap<String, Info> loadInfo() {
         HashMap<String, Info> infoList = new HashMap<>();
+
         try {
             FileReader fileReader = new FileReader("src/main/resources/Transactions.csv");
             BufferedReader bufReader = new BufferedReader(fileReader);
