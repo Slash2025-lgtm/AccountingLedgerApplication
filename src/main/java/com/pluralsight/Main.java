@@ -1,7 +1,6 @@
 package com.pluralsight;
 
 import java.io.*;
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -398,15 +397,15 @@ public class Main {
 
     public static void customSearched(HashMap<String, Info> infoList, String type, String startDate, String endDate, String desc, int amount, String vendor) {
         if (type.equalsIgnoreCase("Month")) {
-            usingDateSearch(infoList, startDate, endDate, desc, vendor, amount, 1);
+            searchCheck(infoList, startDate, endDate, desc, vendor, amount, 1);
         } else if (type.equalsIgnoreCase("Year")) {
-            usingDateSearch(infoList, startDate, endDate, desc, vendor, amount, 0);
+            searchCheck(infoList, startDate, endDate, desc, vendor, amount, 0);
         } else {
-            usingDateSearch(infoList, startDate, endDate, desc, vendor, amount, 0);
+            searchCheck(infoList, startDate, endDate, desc, vendor, amount, 0);
         }
     }
 
-    public static void usingDateSearch(HashMap<String, Info> infoList, String startDate, String endDate, String desc, String vendor, int amount, int index) {
+    public static void searchCheck(HashMap<String, Info> infoList, String startDate, String endDate, String desc, String vendor, int amount, int index) {
         boolean isStartDate = (!startDate.equals(""));
         boolean isEndDate = (!endDate.equals(""));
         boolean isDesc = (!desc.equals(""));
