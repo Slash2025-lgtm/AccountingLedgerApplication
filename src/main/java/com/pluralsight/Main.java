@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.io.*;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("App Activated\n\nFinancial Transaction Tracker Plus");
         while (true) {
             run();
         }
@@ -47,7 +49,7 @@ public class Main {
                 exit();
                 break;
             default:
-                System.out.println("Letter has to be uppercase or one of the letters above");
+                System.out.println("Letter has to be uppercase and one of the letters above");
                 System.out.print("Press Enter to continue...");
                 keyboard.nextLine().trim();
                 System.out.println();
@@ -134,13 +136,13 @@ public class Main {
         HashMap<String, Info> infoList = loadInfo();
         switch (selected) {
             case "A":
-                showAll(infoList);
+                showAll(infoList, keyboard);
                 break;
             case "D":
-                showDeposits(infoList);
+                showDeposits(infoList, keyboard);
                 break;
             case "P":
-                showPayments(infoList);
+                showPayments(infoList, keyboard);
                 break;
             case "R":
                 showReports();
@@ -150,20 +152,27 @@ public class Main {
                 System.out.println("Returning");
                 break;
             default:
-                System.out.println("Invalid");
+                System.out.println("Letter has to be uppercase and one of the letters above");
+                System.out.print("Press Enter to continue...");
+                keyboard.nextLine().trim();
+                System.out.println();
+                ledgerInfo();
+                ledger(keyboard);
                 break;
         }
     }
 
-    public static void showAll(HashMap<String, Info> infoList) {
+    public static void showAll(HashMap<String, Info> infoList, Scanner keyboard) {
         System.out.println("\n=== All Transactions ===");
         for (Info info : infoList.values()) {
             System.out.printf("Date: %s\nTime: %s\nDescription: %s\nVendor: %s\nPrice: $%.2f\n", info.getDate(), info.getTime(), info.getDesc(), info.getVendor(), info.getPrice());
             System.out.println();
         }
+        ledgerInfo();
+        ledger(keyboard);
     }
 
-    public static void showDeposits(HashMap<String, Info> infoList) {
+    public static void showDeposits(HashMap<String, Info> infoList, Scanner keyboard) {
         System.out.println("\n=== Deposits ===");
         for (Info info : infoList.values()) {
             if (info.getPrice() > 0) {
@@ -171,9 +180,11 @@ public class Main {
                 System.out.println();
             }
         }
+        ledgerInfo();
+        ledger(keyboard);
     }
 
-    public static void showPayments(HashMap<String, Info> infoList) {
+    public static void showPayments(HashMap<String, Info> infoList, Scanner keyboard) {
         System.out.println("\n=== Payments ===");
         for (Info info : infoList.values()) {
             if (info.getPrice() < 0) {
@@ -181,6 +192,8 @@ public class Main {
                 System.out.println();
             }
         }
+        ledgerInfo();
+        ledger(keyboard);
     }
 
     public static void showReports() {
@@ -201,16 +214,16 @@ public class Main {
 
         switch (selected) {
             case 1:
-                monthToDate(infoList);
+                monthToDate(infoList, keyboard);
                 break;
             case 2:
-                previousMonth(infoList);
+                previousMonth(infoList, keyboard);
                 break;
             case 3:
-                monthToYear(infoList);
+                monthToYear(infoList, keyboard);
                 break;
             case 4:
-                previousYear(infoList);
+                previousYear(infoList, keyboard);
                 break;
             case 5:
                 vendorSearch(infoList, keyboard);
@@ -223,12 +236,17 @@ public class Main {
                 ledger(keyboard);
                 break;
             default:
-                System.out.println("Invalid");
+                System.out.println("Input has to be a number and one of the numbers above");
+                System.out.print("Press Enter to continue...");
+                keyboard.nextLine().trim();
+                System.out.println();
+                showReports();
+                reports(infoList, keyboard);
                 break;
         }
     }
 
-    public static void monthToDate(HashMap<String, Info> infoList) {
+    public static void monthToDate(HashMap<String, Info> infoList, Scanner keyboard) {
         System.out.println("\n=== Purchases Last Month ===");
         LocalDate todayDate = LocalDate.now();
         String[] dateList = todayDate.toString().split("[-]");
@@ -241,12 +259,11 @@ public class Main {
                 System.out.println();
             }
         }
-        Scanner keyboard = new Scanner(System.in);
         showReports();
-        reports(infoList,keyboard);
+        reports(infoList, keyboard);
     }
 
-    public static void previousMonth(HashMap<String, Info> infoList) {
+    public static void previousMonth(HashMap<String, Info> infoList, Scanner keyboard) {
         System.out.println("\n=== Purchases This Month ===");
         LocalDate todayDate = LocalDate.now();
         String[] dateList = todayDate.toString().split("[-]");
@@ -259,12 +276,11 @@ public class Main {
                 System.out.println();
             }
         }
-        Scanner keyboard = new Scanner(System.in);
         showReports();
-        reports(infoList,keyboard);
+        reports(infoList, keyboard);
     }
 
-    public static void monthToYear(HashMap<String, Info> infoList) {
+    public static void monthToYear(HashMap<String, Info> infoList, Scanner keyboard) {
         System.out.println("\n=== Purchases This Year ===");
         LocalDate todayDate = LocalDate.now();
         String[] dateList = todayDate.toString().split("[-]");
@@ -277,12 +293,11 @@ public class Main {
                 System.out.println();
             }
         }
-        Scanner keyboard = new Scanner(System.in);
         showReports();
-        reports(infoList,keyboard);
+        reports(infoList, keyboard);
     }
 
-    public static void previousYear(HashMap<String, Info> infoList) {
+    public static void previousYear(HashMap<String, Info> infoList, Scanner keyboard) {
         System.out.println("\n=== Purchases Last Year ===");
         LocalDate todayDate = LocalDate.now();
         String[] dateList = todayDate.toString().split("[-]");
@@ -295,9 +310,8 @@ public class Main {
                 System.out.println();
             }
         }
-        Scanner keyboard = new Scanner(System.in);
         showReports();
-        reports(infoList,keyboard);
+        reports(infoList, keyboard);
     }
 
     public static void vendorSearch(HashMap<String, Info> infoList, Scanner keyboard) {
@@ -310,21 +324,25 @@ public class Main {
                 System.out.println();
             }
         }
+        showReports();
+        reports(infoList, keyboard);
     }
 
     public static void customSearch(HashMap<String, Info> infoList, Scanner keyboard) {
         System.out.println("\n=== Custom Search ===");
         System.out.println("\nPlease Keep Blank if you are not \nlooking for what is being asked\n");
 
-        System.out.println("Please type Month or Year \n(Keep Blank if not looking for a Start/End Date)");
+        System.out.println("Please type Month or Year \n[Keep Blank if not looking for a Start/End Date]");
         String type = keyboard.nextLine().trim();
+        LocalDate todayDate = LocalDate.now();
+        String startDate = "";
+        String endDate = "";
 
         if (!type.equalsIgnoreCase("Month") && !type.equalsIgnoreCase("Year")) {
-            System.out.println("Error you typed the wrong thing");
+            endDate = todayDate.toString();
+            System.out.println("Skipping start and end date");
             System.out.println("Please click Enter to continue");
             keyboard.nextLine();
-            showReports();
-            reports(infoList, keyboard);
         }
 
         if (!type.equals("")) {
@@ -333,21 +351,19 @@ public class Main {
 
             if (selected == 1) {
                 System.out.print("Enter Starting Date (YYYY-MM-DD): ");
-                String startDate = keyboard.next().trim();
+                startDate = keyboard.next().trim();
                 keyboard.nextLine();
-                nextPart(infoList, keyboard, type, startDate, "");
             } else if (selected == 2) {
                 System.out.print("Enter Ending Date (YYYY-MM-DD): ");
-                String endDate = keyboard.next().trim();
+                endDate = keyboard.next().trim();
                 keyboard.nextLine();
-                nextPart(infoList, keyboard, type, "", endDate);
             } else if (selected == 3) {
                 System.out.print("Enter Starting Date (YYYY-MM-DD): ");
-                String startDate = keyboard.next().trim();
+                startDate = keyboard.next().trim();
                 keyboard.nextLine();
 
                 System.out.print("Enter Ending Date (YYYY-MM-DD): ");
-                String endDate = keyboard.nextLine().trim();
+                endDate = keyboard.nextLine().trim();
 
                 if (!startDate.contains("-") || !endDate.contains("-")) {
                     System.out.println("ERROR YOU HAVE TO TYPE THE DATES IN A (YYYY-MM-DD) Format");
@@ -355,8 +371,6 @@ public class Main {
                     keyboard.nextLine();
                     showReports();
                     reports(infoList, keyboard);
-                } else {
-                    nextPart(infoList, keyboard, type, startDate, endDate);
                 }
             } else if (selected == 4) {
                 showReports();
@@ -367,18 +381,18 @@ public class Main {
                 keyboard.nextLine();
             }
         }
+        nextPart(infoList, keyboard, type, startDate, endDate);
     }
 
     public static void nextPart(HashMap<String, Info> infoList, Scanner keyboard,String type, String startDate, String endDate) {
         System.out.print("Enter Description: ");
         String desc = keyboard.nextLine().trim();
-
         System.out.print("Enter Vendor: ");
         String vendor = keyboard.nextLine();
 
-        System.out.print("Enter Amount: ");
+        System.out.print("[Enter 0 if you are not looking for this]\nEnter Amount: ");
         int amount = keyboard.nextInt();
-
+        keyboard.nextLine();
         customSearched(infoList, type, startDate, endDate, desc, amount, vendor);
     }
 
@@ -386,6 +400,8 @@ public class Main {
         if (type.equalsIgnoreCase("Month")) {
             usingDateSearch(infoList, startDate, endDate, desc, vendor, amount, 1);
         } else if (type.equalsIgnoreCase("Year")) {
+            usingDateSearch(infoList, startDate, endDate, desc, vendor, amount, 0);
+        } else {
             usingDateSearch(infoList, startDate, endDate, desc, vendor, amount, 0);
         }
     }
@@ -399,7 +415,6 @@ public class Main {
 
         int chosenStartDate = 0;
         int chosenEndDate = 0;
-
         if (!startDate.equals("")) {
             String[] startDateList = startDate.split("[-]");
             chosenStartDate = Integer.parseInt(startDateList[index]);
