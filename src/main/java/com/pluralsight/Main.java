@@ -153,7 +153,7 @@ public class Main {
             default:
                 System.out.println("Letter has to be uppercase and one of the letters above");
                 System.out.print("Press Enter to continue...");
-                keyboard.nextLine().trim();
+                keyboard.nextLine();
                 System.out.println();
                 ledgerInfo();
                 ledger(keyboard);
@@ -207,41 +207,46 @@ public class Main {
     }
 
     public static void reports(HashMap<String, Info> infoList, Scanner keyboard) {
-        System.out.print("Enter a Number: ");
-        int selected = keyboard.nextInt();
-        keyboard.nextLine().trim();
-
-        switch (selected) {
-            case 1:
-                monthToDate(infoList, keyboard);
-                break;
-            case 2:
-                previousMonth(infoList, keyboard);
-                break;
-            case 3:
-                monthToYear(infoList, keyboard);
-                break;
-            case 4:
-                previousYear(infoList, keyboard);
-                break;
-            case 5:
-                vendorSearch(infoList, keyboard);
-                break;
-            case 6:
-                customSearch(infoList, keyboard);
-                break;
-            case 7:
-                ledgerInfo();
-                ledger(keyboard);
-                break;
-            default:
-                System.out.println("Input has to be a number and one of the numbers above");
-                System.out.print("Press Enter to continue...");
-                keyboard.nextLine().trim();
-                System.out.println();
-                showReports();
-                reports(infoList, keyboard);
-                break;
+        try {
+            System.out.print("Enter a Number: ");
+            int selected = keyboard.nextInt();
+            keyboard.nextLine();
+            switch (selected) {
+                case 1:
+                    monthToDate(infoList, keyboard);
+                    break;
+                case 2:
+                    previousMonth(infoList, keyboard);
+                    break;
+                case 3:
+                    monthToYear(infoList, keyboard);
+                    break;
+                case 4:
+                    previousYear(infoList, keyboard);
+                    break;
+                case 5:
+                    vendorSearch(infoList, keyboard);
+                    break;
+                case 6:
+                    customSearch(infoList, keyboard);
+                    break;
+                case 7:
+                    ledgerInfo();
+                    ledger(keyboard);
+                    break;
+                default:
+                    System.out.println("Input has to be a number and one of the numbers above");
+                    System.out.print("Press Enter to continue...");
+                    keyboard.nextLine();
+                    System.out.println();
+                    showReports();
+                    reports(infoList, keyboard);
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("You most likely typed a string please try again");
+            showReports();
+            reports(infoList, keyboard);
         }
     }
 
@@ -292,6 +297,7 @@ public class Main {
                 System.out.println();
             }
         }
+
         showReports();
         reports(infoList, keyboard);
     }
@@ -392,20 +398,20 @@ public class Main {
         System.out.print("[Enter 0 if you are not looking for this]\nEnter Amount: ");
         int amount = keyboard.nextInt();
         keyboard.nextLine();
-        customSearched(infoList, type, startDate, endDate, desc, amount, vendor);
+        customSearched(infoList, type, startDate, endDate, desc, amount, vendor, keyboard);
     }
 
-    public static void customSearched(HashMap<String, Info> infoList, String type, String startDate, String endDate, String desc, int amount, String vendor) {
+    public static void customSearched(HashMap<String, Info> infoList, String type, String startDate, String endDate, String desc, int amount, String vendor, Scanner keyboard) {
         if (type.equalsIgnoreCase("Month")) {
-            searchCheck(infoList, startDate, endDate, desc, vendor, amount, 1);
+            searchCheck(infoList, startDate, endDate, desc, vendor, amount, 1, keyboard);
         } else if (type.equalsIgnoreCase("Year")) {
-            searchCheck(infoList, startDate, endDate, desc, vendor, amount, 0);
+            searchCheck(infoList, startDate, endDate, desc, vendor, amount, 0, keyboard);
         } else {
-            searchCheck(infoList, startDate, endDate, desc, vendor, amount, 0);
+            searchCheck(infoList, startDate, endDate, desc, vendor, amount, 0, keyboard);
         }
     }
 
-    public static void searchCheck(HashMap<String, Info> infoList, String startDate, String endDate, String desc, String vendor, int amount, int index) {
+    public static void searchCheck(HashMap<String, Info> infoList, String startDate, String endDate, String desc, String vendor, int amount, int index, Scanner keyboard) {
         boolean isStartDate = (!startDate.equals(""));
         boolean isEndDate = (!endDate.equals(""));
         boolean isDesc = (!desc.equals(""));
@@ -440,6 +446,8 @@ public class Main {
                 System.out.println();
             }
         }
+        showReports();
+        reports(infoList, keyboard);
     }
 
     public static HashMap<String, Info> loadInfo() {
