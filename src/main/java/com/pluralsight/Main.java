@@ -120,6 +120,7 @@ public class Main {
     public static void exit() {
         System.exit(0);
     }
+
     public static void ledgerInfo() {
         System.out.println("\n=== Ledger ===");
         System.out.println("\tA) All");
@@ -244,9 +245,7 @@ public class Main {
                     break;
             }
         } catch (Exception e) {
-            System.out.println("You most likely typed a string please try again");
-            showReports();
-            reports(infoList, keyboard);
+            System.out.println("You most likely typed a string sending you back to home screen, Please try again");
         }
     }
 
